@@ -1,10 +1,14 @@
 <mat-card>
+    <mat-form-field>
+      <input matInput [(ngModel)]="title">
+    </mat-form-field>
   <mat-form-field>
-    <textarea matInput [(ngModel)]="enteredText"></textarea>
+    <textarea matInput [(ngModel)]="message"></textarea>
   </mat-form-field>
   <button
     mat-raised-button
     color="accent"
-    (click)="onAddPost()">Add Post</button>
+    (click)="onAddPost()">
+    Add Message
+  </button>
 </mat-card>
-<p>{{newPost}}</p>
