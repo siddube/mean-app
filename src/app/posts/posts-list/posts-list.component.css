@@ -1,0 +1,8 @@
+.info-text {
+  text-align: center;
+}
+
+:host {
+  display: block;
+  margin: 1rem auto;
+}
