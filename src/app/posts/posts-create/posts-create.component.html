@@ -8,6 +8,7 @@
           required
           minlength="3"
           #title="ngModel"
+          placeholder="Title"
           >
         <mat-error *ngIf="title.invalid">Please enter message title</mat-error>
       </mat-form-field>
@@ -19,6 +20,7 @@
           required
           minlength="3"
           #message="ngModel"
+          placeholder="Message"
         ></textarea>
         <mat-error *ngIf="message.invalid">Please enter message title</mat-error>
       </mat-form-field>
@@ -26,7 +28,7 @@
         mat-raised-button
         color="accent"
         type="submit">
-        Add Message
+        SEND
       </button>
   </form>
 </mat-card>
