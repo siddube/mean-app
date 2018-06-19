@@ -25,8 +25,12 @@ export class PostsService {
       title,
       message
     };
-    this.posts.push(newPost);
-    this.postsUpdated.next([...this.posts]);
+    this.http.post<{message: string}>('http://localhost:3000/api/posts', newPost)
+      .subscribe((data) => {
+        console.log(data.message);
+        this.posts.push(newPost);
+        this.postsUpdated.next([...this.posts]);
+      });
   }
 
   getPostUpdateListener () {
