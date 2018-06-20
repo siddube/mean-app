@@ -1,6 +1,9 @@
 const express = require('express');
 const body_parser = require('body-parser');
 
+const { mongoose } = require('./db/mongoose');
+const  {Post } = require('./models/posts');
+
 const app = express();
 
 app.use(body_parser.json());
@@ -14,8 +17,11 @@ app.use((req, res, next) => {
 });
 
 app.post('/api/posts', (req, res, next) => {
-  const post = req.body;
-  console.log(post);
+  const post = new Post({
+    title: req.body.title,
+    message: req.body.message
+  });
+  post.save();
   res.status(201).json({message: 'Post Added'});
 });
 
