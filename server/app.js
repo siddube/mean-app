@@ -21,19 +21,25 @@ app.post('/api/posts', (req, res, next) => {
     title: req.body.title,
     message: req.body.message
   });
-  post.save();
-  res.status(201).json({message: 'Post Added'});
+  post.save().then((doc) => {
+    res.status(201).json({message: 'Post Added', postId: doc._id});
+  });
+
 });
 
 app.get('/api/posts', (req, res, next) => {
   Post.find({}).then((docs) => {
     res.status(200).send({posts: docs});
+  }, (e) => {
+    res.send(e)
   });
 });
 
 app.delete('/api/posts/:id', (req, res, next) => {
-  Post.deleteOne({_id: req.params.id}).then(() => {
-    res.status(200).json({message: 'Post Deleted'});
+  Post.findOneAndRemove({_id: req.params.id}).then(() => {
+    res.status(201).json({message: 'Post Deleted'});
+  }, (e) => {
+    res.send(e)
   });
 });
 
