@@ -26,18 +26,9 @@ app.post('/api/posts', (req, res, next) => {
 });
 
 app.get('/api/posts', (req, res, next) => {
-  const posts = [{
-    id: '1safknkvot31kasv',
-    title: 'First Post',
-    message: 'This is a message from server'
-  }, {
-    id: 'axvnifhvoasjvqjg',
-    title: 'Second Post',
-    message: 'This is a message from server'
-  }
-];
-
-res.status(200).send({posts});
+  Post.find({}).then((docs) => {
+    res.status(200).send({posts: docs});
+  });
 });
 
 module.exports = app;
