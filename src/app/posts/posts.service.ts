@@ -29,6 +29,10 @@ export class PostsService {
     });
   }
 
+  getPost (postId: string) {
+    return { ...this.posts.find((post) => post.id === postId)};
+  }
+
   setPost (title: String, message: String) {
     const newPost: Post = {
       id: null,
