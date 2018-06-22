@@ -6,3 +6,9 @@
   display: block;
   margin: 1rem auto;
 }
+
+#create-message-btn {
+  position: fixed;
+  bottom: 10%;
+  right: 10%;
+}
