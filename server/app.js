@@ -43,4 +43,16 @@ app.delete('/api/posts/:id', (req, res, next) => {
   });
 });
 
+app.patch('/api/posts/:id', (req, res, next) => {
+  const post = {
+    title: req.body.title,
+    message: req.body.message
+  }
+  Post.findOneAndUpdate({_id: req.params.id}, {$set: post}, {new: true}).then(() => {
+    res.status(201).json({message: 'Post Edited'});
+  }, (e) => {
+    res.send(e)
+  });
+});
+
 module.exports = app;

@@ -57,6 +57,16 @@ export class PostsService {
       });
   }
 
+  editPost (postId: string, title: String, message: String) {
+    const updatedPost: Post = {
+      id: postId,
+      title,
+      message
+    };
+    this.http.patch<{postId: string}>(`http://localhost:3000/api/posts/${postId}`, updatedPost).subscribe(() => {
+
+    });
+  }
   getPostUpdateListener () {
     return this.postsUpdated.asObservable();
   }
