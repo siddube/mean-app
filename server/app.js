@@ -35,6 +35,14 @@ app.get('/api/posts', (req, res, next) => {
   });
 });
 
+app.get('/api/posts/:id', (req, res, next) => {
+  Post.findById(req.params.id).then((doc) => {
+    res.status(200).send({post: doc});
+  }, (e) => {
+    res.send(e)
+  });
+});
+
 app.delete('/api/posts/:id', (req, res, next) => {
   Post.findOneAndRemove({_id: req.params.id}).then(() => {
     res.status(201).json({message: 'Post Deleted'});

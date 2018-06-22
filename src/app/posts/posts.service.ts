@@ -30,7 +30,7 @@ export class PostsService {
   }
 
   getPost (postId: string) {
-    return { ...this.posts.find((post) => post.id === postId)};
+    return this.http.get<{message: string, post: any}>(`http://localhost:3000/api/posts/${postId}`);
   }
 
   setPost (title: String, message: String) {
