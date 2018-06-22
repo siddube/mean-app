@@ -9,6 +9,11 @@
 
 #create-message-btn {
   position: fixed;
-  bottom: 10%;
-  right: 10%;
+  bottom: 5%;
+  right: 5%;
+}
+
+mat-spinner {
+  display: block;
+  margin: 0 auto;
 }
