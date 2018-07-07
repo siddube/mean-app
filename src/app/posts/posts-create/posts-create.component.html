@@ -25,11 +25,18 @@
         ></textarea>
         <mat-error *ngIf="message.invalid">Please enter message title</mat-error>
       </mat-form-field>
-      <button
+      <div>
+        <button type="button" mat-button (click)="imageUploader.click()">UPLOAD IMAGE</button>
+        <input type="file" #imageUploader>
+      </div>
+      <div align="end">
+          <span flex></span>
+        <button
         mat-raised-button
         color="accent"
         type="submit">
-        SEND
+        POST
       </button>
+      </div>
   </form>
 </mat-card>
