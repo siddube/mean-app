@@ -15,6 +15,7 @@ export class PostsCreateComponent implements OnInit {
   private mode = 'create';
   private postId: string;
   form: FormGroup;
+  imagePreview: string;
   isLoading = false;
   post: Post;
   ngOnInit () {
@@ -23,6 +24,9 @@ export class PostsCreateComponent implements OnInit {
         validators: [Validators.required, Validators.minLength(3)]
       }),
       message: new FormControl(null, {
+        validators: [Validators.required]
+      }),
+      image: new FormControl(null, {
         validators: [Validators.required]
       })
     });
@@ -58,5 +62,17 @@ export class PostsCreateComponent implements OnInit {
     }
 
     this.form.reset();
+  }
+
+  onImageUploaded (event: Event) {
+    const image = (event.target as HTMLInputElement).files[0];
+    this.form.patchValue({image});
+    this.form.get('image').updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result;
+    };
+    reader.readAsDataURL(image);
+    console.log(image);
   }
 }

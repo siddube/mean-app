@@ -17,9 +17,13 @@
         ></textarea>
         <mat-error *ngIf="form.get('message').invalid">Please enter message title</mat-error>
       </mat-form-field>
+      <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview">
+        <img [src]="imagePreview" [alt]="form.value.title" id="preview-img">
+        <p>{{form.value.image.name}}</p>
+      </div>
       <div>
         <button type="button" mat-button (click)="imageUploader.click()">UPLOAD IMAGE</button>
-        <input type="file" #imageUploader>
+        <input type="file" #imageUploader (change)="onImageUploaded($event)">
       </div>
       <div align="end">
           <span flex></span>
