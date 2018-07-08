@@ -20,7 +20,8 @@ export class PostsService {
           return {
             title: post.title,
             message: post.message,
-            id: post._id
+            id: post._id,
+            imagePath: post.imagePath
           };
         });
       }))
@@ -34,16 +35,19 @@ export class PostsService {
     return this.http.get<{message: string, post: any}>(`http://localhost:3000/api/posts/${postId}`);
   }
 
-  setPost (title: String, message: String) {
-    const newPost: Post = {
-      id: null,
-      title,
-      message
-    };
-    this.http.post<{message: string, postId: string}>('http://localhost:3000/api/posts', newPost)
+  setPost (title: string, message: string, image: File) {
+    const postData = new FormData();
+    postData.append('title', title);
+    postData.append('message', message);
+    postData.append('image', image, title)
+    this.http.post<{message: string, post: Post}>('http://localhost:3000/api/posts', postData)
       .subscribe((data) => {
-        const id = data.postId;
-        newPost.id = id;
+        const newPost: Post = {
+          id: data.post.id,
+          title,
+          message,
+          imagePath: data.post.imagePath
+        };
         this.posts.push(newPost);
         this.postsUpdated.next([...this.posts]);
         this.router.navigate(['/']);
@@ -63,7 +67,8 @@ export class PostsService {
     const updatedPost: Post = {
       id: postId,
       title,
-      message
+      message,
+      imagePath: null
     };
     this.http.patch<{postId: string}>(`http://localhost:3000/api/posts/${postId}`, updatedPost).subscribe(() => {
       this.router.navigate(['/']);
