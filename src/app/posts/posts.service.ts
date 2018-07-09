@@ -32,14 +32,14 @@ export class PostsService {
   }
 
   getPost (postId: string) {
-    return this.http.get<{message: string, post: any}>(`http://localhost:3000/api/posts/${postId}`);
+    return this.http.get<{ _id: string, title: string, message: string, imagePath: string }>(`http://localhost:3000/api/posts/${postId}`);
   }
 
   setPost (title: string, message: string, image: File) {
     const postData = new FormData();
     postData.append('title', title);
     postData.append('message', message);
-    postData.append('image', image, title)
+    postData.append('image', image, title);
     this.http.post<{message: string, post: Post}>('http://localhost:3000/api/posts', postData)
       .subscribe((data) => {
         const newPost: Post = {
@@ -63,14 +63,34 @@ export class PostsService {
       });
   }
 
-  editPost (postId: string, title: String, message: String) {
-    const updatedPost: Post = {
-      id: postId,
-      title,
-      message,
-      imagePath: null
-    };
-    this.http.patch<{postId: string}>(`http://localhost:3000/api/posts/${postId}`, updatedPost).subscribe(() => {
+  editPost (postId: string, title: string, message: string, image: File | string ) {
+    let postData;
+    if(typeof(image) === 'object') {
+      postData = new FormData();
+      postData.append('id', postId);
+      postData.append('title', title);
+      postData.append('message', message);
+      postData.append('image', image, title);
+    } else {
+      postData = {
+        id: postId,
+        title,
+        message,
+        imagePath: image
+      };
+    }
+    this.http.patch<{postId: string}>(`http://localhost:3000/api/posts/${postId}`, postData).subscribe((data) => {
+      const updatedPosts = [...this.posts];
+        const oldPostIndex = updatedPosts.findIndex(p => p.id === postId);
+        const post: Post = {
+          id: postId,
+          title: title,
+          message: message,
+          imagePath: ''
+        };
+        updatedPosts[oldPostIndex] = post;
+        this.posts = updatedPosts;
+        this.postsUpdated.next([...this.posts]);
       this.router.navigate(['/']);
     });
   }

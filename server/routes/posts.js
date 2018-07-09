@@ -71,11 +71,18 @@ router.delete('/:id', (req, res, next) => {
   });
 });
 
-router.patch('/:id', (req, res, next) => {
-  const post = {
-    title: req.body.title,
-    message: req.body.message
-  }
+router.patch('/:id', multer({storage: storage}).single('image'), (req, res, next) => {
+  let imagePath = req.body.imagePath;
+    if (req.file) {
+      const url = req.protocol + "://" + req.get("host");
+      imagePath = url + "/images/" + req.file.filename
+    }
+    const post = new Post({
+      _id: req.body.id,
+      title: req.body.title,
+      message: req.body.message,
+      imagePath: imagePath
+    });
   Post.findOneAndUpdate({_id: req.params.id}, {$set: post}, {new: true}).then(() => {
     res.status(201).json({message: 'Post Edited'});
   }, (e) => {
